@@ -1,0 +1,174 @@
+{% load staticfiles%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>
+    {% block title%} EPAP - Dashboard {%endblock%}
+  </title>
+  <!-- Favicon -->
+  <link href="{% static '/img/brand/favicon.png' %}" rel="icon" type="image/png">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
+  <!-- Icons -->
+  <link href="{% static '/js/plugins/nucleo/css/nucleo.css' %}" rel="stylesheet" />
+  <link href="{% static '/js/plugins/@fortawesome/fontawesome-free/css/all.min.css' %}" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link href="{% static '/css/argon-dashboard.css' %} " rel="stylesheet" />
+</head>
+
+<body class="">
+  {% block side-nav%}
+  <nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
+    <div class="container-fluid">
+      <!-- Toggler -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <!-- Brand -->
+      <a class="navbar-brand pt-0" href="{% url 'index' %}">
+        <img src="{% static '/img/brand/logo.png' %}" class="navbar-brand-img" alt="...">
+      </a>
+
+      <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+        <!-- Collapse header -->
+        <div class="navbar-collapse-header d-md-none">
+          <div class="row">
+            <div class="col-6 collapse-brand">
+              <a href="{% url 'index' %}">
+                <img src="{% static '/img/brand/logo.png' %}">
+              </a>
+            </div>
+            <div class="col-6 collapse-close">
+              <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="false" aria-label="Toggle sidenav">
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <ul class="navbar-nav">
+          <li class="nav-item">
+          <a class=" nav-link " href="{% url 'usuario' %}"> <i class="fa fa-user text-green"></i>Perfil      
+            </a>
+          </li>
+
+          <li class="nav-item">
+          <a class=" nav-link " href="{% url 'index' %}"> <i class="ni ni-tv-2 text-primary"></i> Escore
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " href="{% url 'cadastrar_paciente' %}">
+              <i class="fa fa-user-check text-blue"></i> Cadastrar pacientes
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link " href="{% url 'registrar' %}">
+              <i class="fa fa-user-plus text-blue"></i> Colaboradores
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link " href="http://www2.ebserh.gov.br/web/hu-ufjf/escore-para-alerta-precoce" target="blank">
+              <i class="fa fa-info text-blue"></i> Informações
+            </a>
+          </li>
+
+          <li class="nav-item">
+          <a class=" nav-link " href="{% url 'painel' %}"> <i class="ni ni-tv-2 text-primary"></i> Painel
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link " href="{% url 'logout' %}">
+              <i class="fa fa-sign-out-alt text-blue"></i> Sair
+            </a>
+          </li>
+
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+  {% endblock%}
+  <div class="main-content" id="main-content">
+    <!-- Navbar -->
+    <nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+      <div class="container-fluid">
+        <!-- Brand -->
+        <span class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block">{% block page %}Pagina{% endblock %}</span>
+
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <!-- Header -->
+    <div class="header bg-gradient-info pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+          <!-- Card stats -->
+          <div class="row">
+          {% block topScore%}
+
+          {% endblock%}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid mt--7">
+      <!-- Table -->
+      <div class="row">
+        <div class="col">
+        {%block body%}
+
+        {% endblock%}
+        </div>
+      </div>
+      <!-- Footer -->
+      <footer class="py-5">
+      <div class="container">
+        <div class="row align-items-center justify-content-xl-between">
+          <div class="col-xl-6">
+            <div class="copyright text-center text-xl-left text-muted">
+              © 2019 <a href="#" class="font-weight-bold ml-1" target="_blank">Think program</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    </div>
+  </div>
+  <!--   Core   -->
+  <script src="{% static '/js/plugins/jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static '/js/plugins/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <!--   Optional JS   -->
+  <!--   Argon JS   -->
+  <script src="{% static '/js/argon-dashboard.min.js' %}"></script>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<!--  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+  <script>
+    window.TrackJS &&
+      TrackJS.install({
+        token: "ee6fab19c5a04ac1a32a645abde4613a",
+        application: "argon-dashboard-free"
+      });
+  
+    function openNav() {
+      document.getElementById("sidenav-main").style.width = "250px";
+      document.getElementById("main-content").style.marginLeft = "250px";
+    }
+
+    /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
+    function closeNav() {
+      document.getElementById("sidenav-collapse-main").style.width = "0";
+      document.getElementById("main-content").style.marginLeft = "0";
+    }
+
+  </script>
+</body>
+
+</html>

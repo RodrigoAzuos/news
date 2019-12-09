@@ -1,0 +1,201 @@
+{% extends "base_dashboard.html"%}
+{%block title%}
+EPAP - Paciente#{{paciente.id}}
+{%endblock%}
+{% block page%}Paciente{%endblock%}
+{% block body %}
+    <div class="col-lg-12">
+
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+
+                    <div class=" col-6 "> <span class="text-muted">Horário de avaliações</span></div>
+                    <div class="col-6">
+                        <div class="float-right">
+                        <!-- Botão para acionar modal -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#NovaAvaliacao">
+                              Nova avaliação
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    {% for s in paciente.scores.all %}
+                      <li class="nav-item">
+                        <a class="nav-link" id="tab-{{s.id}}" data-toggle="tab" href="#score-{{s.id}}" role="tab" aria-controls="home" aria-selected="true">{{s.criado_em|date:'d/m - H:i'}}</a>
+                      </li>
+                    {%endfor%}
+                </ul>
+            </div>
+        </div>
+        </br>
+        <div class="tab-content" id="myTabContent">
+        {% for s in paciente.scores.all %}
+        <div class="tab-pane fade show" id="score-{{s.id}}" role="tabpanel" aria-labelledby="tab-{{s.id}}">
+        <div class="card-deck">
+        <div class="card">
+            <div class="card-header">
+                Ação
+            </div>
+            <div class=" card-body">
+                <dl>
+                  <dt>Escore</dt>
+                  <dd class="h2 text-muted">{{s.score}}</dd>
+
+                    {% if s.score == 0 %}
+                      <dt>Frequencia de controle</dt>
+                      <dd>A cada 12 horas</dd>
+                      <dt>Resposta clínica</dt>
+                      <dd>Continuar com a rotina de monitoração com o NEWS todo controle</dd>
+
+                    {% elif s.score >= 7 %}
+                      <dt>Frequencia de controle</dt>
+                      <dd>Monitorização contínua sempre que possível</dd>
+                      <dt>Resposta clínica</dt>
+                      <dd>Enfermeira responsável deve informar urgentemente a equipe médica para avaliação;
+                      A equipe médica deve informar a equipe da UTI  sobre o caso;
+                      Considere a transferência do caso para a UTI;</dd>
+
+                    {% elif s.score >= 5 or s.maior %}
+                      <dt>Frequencia de controle</dt>
+                      <dd>Aumentar frequência para no minimo a cada hora</dd>
+                      <dt>Resposta clínica</dt>
+                      <dd>Enfermeira responsável deve informar urgentemente a equipe médica para avaliação;</dd>
+
+                    {% elif s.score >= 1 and s.score <= 4 %}
+                      <dt>Frequencia de controle</dt>
+                      <dd>No mínimo a cada 4-6 horas</dd>
+                      <dt>Resposta clínica</dt>
+                      <dd>Informar a enfermeira responsável que deve avaliar o paciente;
+                        A enfermeira responsável deve decidir se aumenta a frequência de monitorização e/ou se
+                        é necessária ativar avaliação do plantão;</dd>
+                    {%endif%}
+                </dl>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                Detalhes do Score
+            </div>
+            <div class=" card-body">
+                <dl>
+                  <dt>Profissional</dt>
+                  <dd>{{s.profissional.first_name}} {{s.profissional.last_name}}</dd>
+                  <dt>Nivel conciencia</dt>
+                  <dd>{{s.nivel_conciencia}}</dd>
+                  <dt>Temperatura</dt>
+                  <dd>C° {{s.temperatura}}</dd>
+                  <dt>Frequência cardiaca</dt>
+                  <dd> {{s.frequencia_cardiaca}}</dd>
+                  <dt>PA sistolica</dt>
+                  <dd>{{ s.pa_sistolica}}</dd>
+                  <dt>Frequência respiratória</dt>
+                  <dd>{{s.frequencia_respiratoria}}</dd>
+                  <dt>Saturação de oxigênio</dt>
+                  <dd>{{s.saturacao_oxigenio}}</dd>
+                  <dt>Qualquer suqlementação de oxigênio</dt>
+                  <dd>{{s.qualquer_o2}}</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                Paciente
+            </div>
+            <div class="card-body">
+                <dt>Nome</dt>
+                <dd>{{paciente.nome}}</dd>
+                <dt>Nome da mãe</dt>
+                <dd>{{paciente.nome_mae}}</dd>
+                <dt>Data de nascimento</dt>
+                <dd>{{paciente.data_nascimento}}</dd>
+            </div>
+        </div>
+    </div>
+        </div>
+        {%endfor%}
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="NovaAvaliacao" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="TituloModalCentralizado">Nova avaliação</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+        <form method="post">
+            <div class="modal-body">
+
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="form-group">
+                {{ form.nivel_conciencia.errors }}
+                <label for="{{ form.nivel_conciencia.id_for_label }}">Nivel conciencia:</label>
+                {{form.nivel_conciencia}}
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-6 col-sm-12">
+                    {{ form.temperatura.errors }}
+                    <label for="{{ form.temperatura.id_for_label }}">Temperatura:</label>
+                    {{ form.temperatura}}
+                </div>
+                <div class="form-group col-lg-6 col-sm-12">
+                    {{ form.frequencia_cardiaca.errors }}
+                    <label for="{{ form.temperatura.id_for_label }}">Freq. cardiaca:</label>
+                    {{ form.frequencia_cardiaca}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-6 col-sm-12">
+                    {{ form.pa_sistolica.errors }}
+                    <label for="{{ form.pa_sistolica.id_for_label }}">PA sistolica:</label>
+                    {{ form.pa_sistolica}}
+                </div>
+                <div class="form-group col-lg-6 col-sm-12">
+                    {{ form.frequencia_respiratoria.errors }}
+                    <label for="{{ form.frequencia_respiratoria.id_for_label }}">Freq. respiratória:</label>
+                    {{ form.frequencia_respiratoria}}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="form-group col-lg-6 col-sm-12">
+                    {{ form.saturacao_oxigenio.errors }}
+                    <label for="{{ form.saturacao_oxigenio.id_for_label }}">Saturação de oxigênio:</label>
+                    {{ form.saturacao_oxigenio}}
+
+                </div>
+
+                <div class="form-group col-lg-6 col-sm-12">
+                    {{ form.qualquer_o2.errors }}
+                    <label for="{{ form.qualquer_o2.id_for_label }}">Suplement. de O2:</label>
+                    {{ form.qualquer_o2}}
+                </div>
+            </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-primary">Salvar Avaliação</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<script>
+    var x = document.getElementById("score-{{paciente.scores.all.first.id}}");
+    var y = document.getElementById("tab-{{paciente.scores.all.first.id}}");
+    x.classList.add("active");
+    x.classList.add("show");
+    y.classList.add("active");
+</script>
+{% endblock %}

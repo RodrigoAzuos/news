@@ -1,0 +1,58 @@
+{% extends "base_dashboard.html"%}
+{%block title%}
+EPAP - Cadastro pacientes
+{%endblock%}
+
+{% block page%}
+Cadastro de pacientes
+{%endblock%}
+
+{% block body %}
+
+    <div class="card">
+        <div class="card-header  text-left"> <span class="text-muted"> Cadastro de pacientes</span></div>
+        <div class="card-body">
+           <form method="post">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="row">
+                    <div class="form-group col-lg-6 col-sm-12">
+                        {{ form.nome.errors }}
+                        <label for="{{ form.nome.id_for_label }}">Nome do paciente:</label>
+                        {{ form.nome}}
+                    </div>
+
+                    <div class="form-group col-lg-6 col-sm-12">
+                        {{ form.nome_mae.errors }}
+                        <label for="{{ form.nome_mae.id_for_label }}">Nome da mãe:</label>
+                        {{ form.nome_mae}}
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-4 col-sm-12">
+                        {{ form.leito.errors }}
+                        <label for="{{ form.leito.id_for_label }}">Número do leito:</label>
+                        {{ form.leito}}
+                    </div>
+                    <div class="form-group col-lg-4 col-sm-12">
+                        {{ form.data_nascimento.errors }}
+                        <label for="{{ form.data_nascimento.id_for_label }}">Data nascimento:</label>
+                        {{ form.data_nascimento}}
+                    </div>
+                    <div class="form-group col-lg-4 col-sm-12">
+                        {{ form.telefone.errors }}
+                        <label for="{{ form.telefone.id_for_label }}">Telefone:</label>
+                        {{ form.telefone}}
+                    </div>
+
+                </div>
+
+                <div class="text-center">
+                  <button type="submit" id="button" class="btn btn-primary mt-4">Cadastrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock%}

@@ -1,0 +1,195 @@
+{% extends 'base_dashboard.html'%}
+{% load staticfiles%}
+
+{% block page%}
+Painel - Escore - <a class = 'btn btn-neutral' href="{% url 'index' %}">Voltar para o site</a>
+{%endblock%}
+
+{%block side-nav%}
+
+{%endblock%}
+
+{% block topScore%}
+    {%for paciente in top %}
+        <div class="col-xl-3 col-lg-6">
+            <a href="{% url 'paciente' paciente.id %}">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0 d-inline-block text-truncate" style="max-width: 105px;">{{paciente.nome}}</h5>
+                      <span class="h2 font-weight-bold mb-0">{{paciente.valor_score}}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                        <i class="fas fa-chart-bar"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+            </div>
+    {% endfor %}
+{% endblock%}
+
+{%block body%}
+    <div class="card shadow">
+            <div class="card-header border-0">
+              <h3 class="mb-0">Pacientes</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Leito</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col">Escores</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% if pacientes %}
+                  {%for paciente in pacientes %}
+                  <tr>
+                    <th scope="row">
+                      <div class="media align-items-center">
+                        {{paciente.leito}}
+                      </div>
+                    </th>
+                    <td>
+                      <a href="{% url 'paciente' paciente.id %}">{{paciente.nome}}</a>
+                      <br>
+                      {{paciente.data_nascimento|date:'d/m/Y'}}
+                    </td>
+
+                    <td>
+                      <div class="text-center">
+                        <p class="mr-2 h5 ">{{paciente.scores.all.0.criado_em|date:'H:m'}}</p>
+                        <span class="mr-2 h2 score">{{paciente.scores.all.0.score}}</span>
+                      </div>
+                    </td>
+
+                    <td>
+                      <div class="text-center">
+                        <p class="mr-2 h5 ">{{paciente.scores.all.1.criado_em|date:'H:m'}}</p>
+                        <span class="mr-2 h4">{{paciente.scores.all.1.score}}</span>
+                      </div>
+                    </td>
+
+                    <td>
+                      <div class="text-center">
+                        <p class="mr-2 h5 ">{{paciente.scores.all.2.criado_em|date:'H:m'}}</p>
+                        <span class="mr-2 h4">{{paciente.scores.all.2.score}}</span>
+                      </div>
+                    </td>
+
+                    <td>
+                      <div class="text-center">
+                        <p class="mr-2 h5 ">{{paciente.scores.all.3.criado_em|date:'H:m'}}</p>
+                        <span class="mr-2 h4">{{paciente.scores.all.3.score}}</span>
+                      </div>
+                    </td>
+
+                    <td>
+                      <div class="text-center">
+                        <p class="mr-2 h5 ">{{paciente.scores.all.4.criado_em|date:'H:m'}}</p>
+                        <span class="mr-2 h4">{{paciente.scores.all.4.score}}</span>
+                      </div>
+                    </td>
+
+                    <td>
+                      <div class="text-center">
+                        <p class="mr-2 h5 ">{{paciente.scores.all.5.criado_em|date:'H:m'}}</p>
+                        <span class="mr-2 h4">{{paciente.scores.all.5.score}}</span>
+                      </div>
+                    </td>
+
+                  </tr>
+                  {% endfor%}
+                {% endif%}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card-footer py-4">
+              <nav aria-label="...">
+                <ul class="pagination justify-content-end mb-0s">
+                  <div class="row">
+                  <li class="page-item ">
+                    <a class="" href="?page={{ 1 }}" tabindex="-1">
+                      <i class="fas fa-angle-left"></i>
+                      <span class="sr-only">Primeira</span>
+                    </a>
+                  </li>
+                  ..
+                  &nbsp;
+                  <li class="page-item ">
+                    <a class="" href="?page={{ anterior }}" tabindex="-1">
+                      <i class="fas fa-angle-left"></i>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                     &nbsp; página &nbsp;
+
+                    <a class="active" href="?page={{page}}">{{page}} <span class="sr-only">(current)</span></a>
+
+                    &nbsp; de &nbsp;
+
+                    <a  href="?page={{ultima}}">{{ultima}} <span class="sr-only">(current)</span></a>
+                     &nbsp;
+                     &nbsp;
+                  <li class="page-item ">
+                    <a class="  " href="?page={{proxima}}">
+                      <i class="fas fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                   &nbsp;
+                  ..
+                  <li class="page-item ">
+                    <a class="  " href="?page={{ultima}}">
+                      <i class="fas fa-angle-right"></i>
+                      <span class="sr-only">Ultima</span>
+                    </a>
+                  </li>
+                      &nbsp;&nbsp;&nbsp;
+                  </div>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+    <script>
+        var x = document.getElementsByClassName("score");
+        var i;
+
+        for (i = 0; i < x.length; i++) {
+          console.log(x[i].innerHTML);
+
+          if ((x[i].innerHTML >= 1) && (x[i].innerHTML <= 4)){
+            x[i].parentNode.parentNode.parentNode.classList.add("table-info");
+          }
+
+          if (x[i].innerHTML >= 5){
+            x[i].parentNode.parentNode.parentNode.classList.add("table-warning");
+          }
+
+          if (x[i].innerHTML >= 7){
+            x[i].parentNode.parentNode.parentNode.classList.add("table-danger");
+          }
+        }
+
+        function timedRefresh(timeoutPeriod) {
+          setTimeout("location.reload(true);",timeoutPeriod);
+         }
+
+        window.onload = timedRefresh(30000);
+
+    </script>
+{%endblock%}
+
